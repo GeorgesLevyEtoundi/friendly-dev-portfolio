@@ -4,6 +4,7 @@ import type { Project } from '~/types';
 
 // components
 import ProjectCard from '~/components/ProjectCard';
+import Pagination from '~/components/Pagination';
 
 export async function loader({
 	request,
@@ -28,25 +29,6 @@ const ProjectsPage = ({ loaderData }: Route.ComponentProps) => {
 	const indexOfFirst = indexOfLast - projectPerPage;
 	const currentProjects = projects.slice(indexOfFirst, indexOfLast);
 
-	// Pagination button renderer
-	const renderPagination = () => (
-		<div className="flex justify-center gap-2 mt-8">
-			{Array.from({ length: totalPages }, (_, idx) => (
-				<button
-					key={idx + 1}
-					onClick={() => setCurrentPage(idx + 1)}
-					className={`px-3 py-1 cursor-pointer rounded ${
-						currentPage === idx + 1
-							? 'bg-blue-600 text-white'
-							: 'bg-gray-700 text-gray-200'
-					}`}
-				>
-					{idx + 1}
-				</button>
-			))}
-		</div>
-	);
-
 	return (
 		<>
 			<h2 className="text-3xl font-bold mb-8 text-white">🚀 Projects</h2>
@@ -60,7 +42,11 @@ const ProjectsPage = ({ loaderData }: Route.ComponentProps) => {
 				))}
 			</div>
 
-			{totalPages > 1 && renderPagination()}
+			<Pagination
+				totalPages={totalPages}
+				currentPage={currentPage}
+				setCurrentPage={setCurrentPage}
+			/>
 		</>
 	);
 };
